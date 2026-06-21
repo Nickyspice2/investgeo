@@ -7,17 +7,13 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { MetricCard } from "@/components/cards/MetricCard";
 import { MarketOverviewCard } from "@/components/cards/MarketOverviewCard";
 import { WhaleTransactionTable } from "@/components/tables/WhaleTransactionTable";
+import { LiquidityHeatmap } from "@/components/charts/LiquidityHeatmap";
 import { useWhaleTransactions } from "@/hooks/useWhaleTransactions";
 import { useMarketData } from "@/hooks/useMarketData";
 import { formatUsd, formatNumber } from "@/lib/formatters";
 import { Skeleton } from "@/components/ui/Skeleton";
 
-// Recharts requires DOM APIs — avoid SSR for chart components
-const VolumeChart = dynamic(
-  () => import("@/components/charts/VolumeChart").then((m) => m.VolumeChart),
-  { ssr: false, loading: () => <div className="h-52 flex items-center justify-center"><Skeleton className="w-full h-40 mx-4" /></div> }
-);
-
+// Recharts requires DOM APIs — avoid SSR
 const NetworkDistributionChart = dynamic(
   () => import("@/components/charts/NetworkDistributionChart").then((m) => m.NetworkDistributionChart),
   { ssr: false, loading: () => <div className="h-40 flex items-center justify-center"><Skeleton className="w-32 h-32 rounded-full" /></div> }
@@ -108,10 +104,10 @@ export default function DashboardPage() {
         />
       </div>
 
-      {/* Charts row */}
+      {/* Charts row — Heatmap is the primary focal point */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-        <div className="xl:col-span-2 surface-card overflow-hidden">
-          <VolumeChart transactions={transactions} />
+        <div className="xl:col-span-2 surface-card overflow-hidden shadow-glow">
+          <LiquidityHeatmap />
         </div>
         <div className="surface-card overflow-hidden">
           <NetworkDistributionChart transactions={transactions} />

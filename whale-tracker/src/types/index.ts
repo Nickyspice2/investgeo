@@ -1,5 +1,6 @@
 export type * from "./transaction";
 export type * from "./market";
+export type * from "./orderbook";
 
 export type SortDirection = "asc" | "desc";
 
